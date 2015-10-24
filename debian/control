@@ -1,0 +1,16 @@
+Source: sail
+Maintainer: Jan Wagner <waja@cyconet.org>
+Section: python
+Priority: optional
+Build-Depends: dh-python, python-setuptools (>= 0.6b3), python-all (>= 2.6.6-3), debhelper (>= 9)
+Standards-Version: 3.9.6
+Homepage: https://pypi.python.org/pypi/sail/
+
+Package: python-sail
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}
+Description: Sailabove CLI - Docker hosting
+ Sailabove client
+ .
+ Sailabove.com is a docker hosting solution aiming to be as flexible as a
+ container and as elegant as a sailboat.
