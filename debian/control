@@ -2,15 +2,30 @@ Source: sail
 Maintainer: Jan Wagner <waja@cyconet.org>
 Section: python
 Priority: optional
-Build-Depends: dh-python, python-setuptools (>= 0.6b3), python-all (>= 2.6.6-3), debhelper (>= 9)
+Build-Depends: dh-python, python-setuptools (>= 0.6b3), python-all (>= 2.6.6-3), python3-all, python3-setuptools, debhelper (>= 9)
 Standards-Version: 3.9.6
 Homepage: https://pypi.python.org/pypi/sail/
+X-Python-Version: >= 2.6
+X-Python3-Version: >= 3.2
 
 Package: python-sail
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}
-Description: Sailabove CLI - Docker hosting
+Description: Sailabove CLI - Docker hosting (Python 2)
  Sailabove client
  .
  Sailabove.com is a docker hosting solution aiming to be as flexible as a
  container and as elegant as a sailboat.
+ .
+ This package installs the library for Python 2.
+
+Package: python3-sail
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}
+Description: Sailabove CLI - Docker hosting (Python 3)
+ Sailabove client
+ .
+ Sailabove.com is a docker hosting solution aiming to be as flexible as a
+ container and as elegant as a sailboat.
+ .
+ This package installs the library for Python 3.
