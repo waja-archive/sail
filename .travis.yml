@@ -18,6 +18,8 @@ install:
     - sudo apt-get install -qq --no-install-recommends devscripts equivs
     # pull build deps from debian/control
     - sudo mk-build-deps -ir -t "apt-get --yes --no-install-recommends"
+    - wget "https://github.com/waja-archive/pyaml/releases/download/debian%2F${PYAML_VERSION}/python-pyaml_${PYAML_VERSION}_all.deb" -O /tmp/python-pyaml_all.deb
+    - dpkg -i /tmp/python-pyaml_all.deb
     # remove packages needed for mk-build-deps
     - sudo apt-get purge -qq equivs
     - sudo apt-get autoremove -qq
@@ -33,8 +35,9 @@ after_script:
 
 env:
   global:
+    - PYAML_VERSION=15.8.2-1
     # travis encrypt -r waja/sail GITHUBTOKEN=XXXXXX (https://help.github.com/articles/creating-an-access-token-for-command-line-use / http://docs.travis-ci.com/user/encryption-keys/)
-    secure: "dvfjB8ykAKYCgMPHYLmY27kBcRrysqwqoFSfKMG+DqGW53Ok8C5ropifPR/ue/QHiQNBgUQfSC/bn8d9VWlmfHRi5J9/url+1MgQ+wW33KzBVQT7ggKaWCNUxopABf0eC3STqTG1s1Shm/FWYMjAGLnaktAWh6U4q0KGJvysGGp9UxZFhFTNvdbq1s8Qw2rt8+GiVw4P0JYHHd0FTAEOid0hK1gnW7jeNWO6TpLFzWlP/0Y5CWaSrUzBBkffJxdPZgHAilW7WvTPC5HMsc1bImphiZBr07dxHZtudBOcfWQ8xJl7+XcxcuXkTwtIAbr7GaQUpbd2MUNfv8a9k/XLj6sYDumhI7Yn1mv0OVVP1Lkelax3WYLODycIjNaBmHaHU75V9bTWacy+4kv7Uv+Qm/iQrAS5vibw0/QnHpdS6zNI/otVW9UtgWmal79sswEZmDL571BJAvxFH8bKByBNMlZJMEfkWltjALnloJ+nFNe72+eU01SD0vjmgoV2qiNo/NmLs5GVRJ264YSZjjc7iaGk2qab44tft9kLM+oMKEFzI5VA1tUHv1cIUaM8LfMIly1CJQXFzlLKwulGkpq7ut741gX79xt0aQ9dewQ1DO96o8s5W2+ETLPIEK2XBstmuToVg787krEe6goCz/BXR1bS2iuGqPapV2gGvyti5N4="
+    - secure: "dvfjB8ykAKYCgMPHYLmY27kBcRrysqwqoFSfKMG+DqGW53Ok8C5ropifPR/ue/QHiQNBgUQfSC/bn8d9VWlmfHRi5J9/url+1MgQ+wW33KzBVQT7ggKaWCNUxopABf0eC3STqTG1s1Shm/FWYMjAGLnaktAWh6U4q0KGJvysGGp9UxZFhFTNvdbq1s8Qw2rt8+GiVw4P0JYHHd0FTAEOid0hK1gnW7jeNWO6TpLFzWlP/0Y5CWaSrUzBBkffJxdPZgHAilW7WvTPC5HMsc1bImphiZBr07dxHZtudBOcfWQ8xJl7+XcxcuXkTwtIAbr7GaQUpbd2MUNfv8a9k/XLj6sYDumhI7Yn1mv0OVVP1Lkelax3WYLODycIjNaBmHaHU75V9bTWacy+4kv7Uv+Qm/iQrAS5vibw0/QnHpdS6zNI/otVW9UtgWmal79sswEZmDL571BJAvxFH8bKByBNMlZJMEfkWltjALnloJ+nFNe72+eU01SD0vjmgoV2qiNo/NmLs5GVRJ264YSZjjc7iaGk2qab44tft9kLM+oMKEFzI5VA1tUHv1cIUaM8LfMIly1CJQXFzlLKwulGkpq7ut741gX79xt0aQ9dewQ1DO96o8s5W2+ETLPIEK2XBstmuToVg787krEe6goCz/BXR1bS2iuGqPapV2gGvyti5N4="
 
 after_success:
     - mkdir -p debian/build/release/
