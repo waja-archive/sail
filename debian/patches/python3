@@ -1,0 +1,268 @@
+diff --git a/sail b/sail
+index 93a5fad..6380201 100755
+--- a/sail
++++ b/sail
+@@ -229,10 +229,10 @@ def docker_parse_config_old(endpoint, debug):
+             conf['PASSWORD'] = auth[1]
+     except IOError:
+         if debug:
+-            print >> sys.stderr, "[WARNING] Failed to read %s" % DOCKERCFG_OLD
++            print ("[WARNING] Failed to read %s" % DOCKERCFG_OLD, file=sys.stderr)
+     except ValueError:
+         if debug:
+-            print >> sys.stderr, "[WARNING] Failed to parse %s" % DOCKERCFG_OLD
++            print ("[WARNING] Failed to parse %s" % DOCKERCFG_OLD, file=sys.stderr)
+ 
+     return conf
+ 
+@@ -259,17 +259,17 @@ def docker_parse_config(endpoint, debug):
+             conf['PASSWORD'] = auth[1]
+     except IOError:
+         if debug:
+-            print >> sys.stderr, "[WARNING] Failed to read %s" % DOCKERCFG
++            print("[WARNING] Failed to read %s" % DOCKERCFG, file=sys.stderr)
+     except (ValueError, KeyError):
+         if debug:
+-            print >> sys.stderr, "[WARNING] Failed to parse %s" % DOCKERCFG
++            print ("[WARNING] Failed to parse %s" % DOCKERCFG_OLD, file=sys.stderr)
+ 
+     return conf
+ 
+ def _print(data):
+     if isinstance(data, requests.Response):
+         data = data.json()
+-    print pyaml.dump(data)
++    print(pyaml.dump(data))
+ 
+ def _tabulate(data, headers):
+     print(tabulate(data, headers, stralign='left', tablefmt='plain'))
+@@ -283,7 +283,7 @@ def exit_exc(message, e, args):
+     if isinstance(message, dict) and 'message' in message:
+         message = message['message']
+ 
+-    print >> sys.stderr, "Failed to %s %s %s: %s" % (action, resource, object_name, message)
++    print("Failed to %s %s %s: %s" % (action, resource, object_name, message), file=sys.stderr)
+ 
+     if args.debug and e:
+ 	import traceback
+@@ -292,12 +292,12 @@ def exit_exc(message, e, args):
+     sys.exit(1)
+ 
+ def _console_loop(stream):
+-    print "Attaching to service console..."
+-    print "Press Ctrl+C to exit"
++    print("Attaching to service console...")
++    print("Press Ctrl+C to exit")
+ 
+     try:
+         for line in stream.iter_lines(chunk_size=1):
+-            print line
++            print(line)
+     except (KeyboardInterrupt, IOError):
+         pass
+ 
+@@ -325,9 +325,9 @@ def api_request(args, method, path, data=None, headers=None, display=True, strea
+         kwargs['params'] = data
+ 
+     if args.debug:
+-        print 'Request: %s %s' % (method, url)
+-        print 'Body: %s' %data
+-        print 'Headers: %s' %headers
++        print('Request: %s %s' % (method, url))
++        print('Body: %s' %data)
++        print('Headers: %s' %headers)
+ 
+     resp = requests.request(method, url, **kwargs)
+     resp.raise_for_status()
+@@ -463,7 +463,7 @@ def api_service_add(args):
+                 network = None
+ 
+             if not 'container_ports' in params:
+-                print >> sys.stderr, "[ERROR] To declare a whitelisted IP, you need to explicit publish (-p) the ports of your container"
++                print("[ERROR] To declare a whitelisted IP, you need to explicit publish (-p) the ports of your container", file=sys.stderr)
+                 return True
+ 
+             # Add whitelist
+@@ -479,13 +479,13 @@ def api_service_add(args):
+     try:
+         resp = api_request(args, 'POST', path, params, stream=True)
+     except Exception as e:
+-        print e
++        print(e)
+         raise
+ 
+     for msg in resp.iter_lines(chunk_size=1):
+         msg = json.loads(msg)
+         if 'message' in msg:
+-            print msg.get('message', None)
++            print(msg.get('message', None))
+         elif 'error' in msg:
+             # If we are in ensure mode, fallback to redeploy
+             if msg.get('error', -1) == 409 and args.redeploy:
+@@ -565,7 +565,7 @@ def api_service_redeploy(args):
+                 network = None
+ 
+             if not 'container_ports' in params:
+-                print >> sys.stderr, "[ERROR] To declare a whitelisted IP, you need to explicit publish (-p) the ports of your container"
++                print("[ERROR] To declare a whitelisted IP, you need to explicit publish (-p) the ports of your container", file=sys.stderr)
+                 return True
+ 
+             # Add whitelist
+@@ -600,16 +600,16 @@ def api_service_redeploy(args):
+     for msg in resp.iter_lines(chunk_size=1):
+         msg = json.loads(msg)
+         if 'message' in msg:
+-            print msg.get('message', None)
++            print(msg.get('message', None))
+         elif 'error' in msg:
+             return exit_exc(msg.get('error_details'), Exception(msg), args)
+         else:
+-            print "\nRedeployed service:"
++            print("\nRedeployed service:")
+             status = msg['state']
+             _print(msg)
+ 
+     if status not in ['running', 'degraded']:
+-        print "\nService failed %s to start (%s)." % (args.service, status)
++        print("\nService failed %s to start (%s)." % (args.service, status))
+         return
+ 
+     # Are we done yet ?
+@@ -625,23 +625,23 @@ def api_service_start(args):
+     if not args.batch:
+         stream = api_service_attach(args, return_generator=True)
+ 
+-    print "\nStarting service..."
++    print("\nStarting service...")
+     resp = api_request(args, 'POST', path, {}, stream=True)
+ 
+     status = None
+     for msg in resp.iter_lines(chunk_size=1):
+         msg = json.loads(msg)
+         if 'message' in msg:
+-            print msg.get('message', None)
++            print(msg.get('message', None))
+         elif 'error' in msg:
+             return exit_exc(msg.get('error_details'), Exception(msg), args)
+         else:
+-            print "\nService %s/%s running:" % (ns, service)
++            print("\nService %s/%s running:" % (ns, service))
+             status = msg['state']
+             _print(msg)
+ 
+     if status not in ['running', 'degraded']:
+-        print "\nService failed %s to start (%s)." % (args.service, status)
++        print("\nService failed %s to start (%s)." % (args.service, status))
+         return
+ 
+     # Are we done yet ?
+@@ -667,7 +667,7 @@ def api_service_scale(args):
+     for msg in resp.iter_lines(chunk_size=1):
+         msg = json.loads(msg)
+         if 'message' in msg:
+-            print msg.get('message', None)
++            print(msg.get('message', None))
+         elif 'error' in msg:
+             return exit_exc(msg.get('error_details'), Exception(msg), args)
+ 
+@@ -721,7 +721,7 @@ def api_service_attach(args, return_generator=False):
+         return r
+     try:
+         for line in r.iter_lines(chunk_size=1):
+-            print line
++            print(line)
+     except (KeyboardInterrupt, IOError):
+         pass
+ 
+@@ -735,7 +735,7 @@ def api_service_logs(args):
+     if args.search: req['search'] = args.search
+     path = '/applications/%s/services/%s/logs' % (ns, service)
+     for line in api_request(args, 'GET', path, req, display=False):
+-        print ' '.join(line)
++        print(' '.join(line))
+ 
+ def api_service_domain_list(args):
+     ns, service, _ = parse_repository(args.service, args.api_user)
+@@ -809,7 +809,7 @@ def api_container_attach(args):
+     r = api_request(args, 'GET', path, stream=True)
+     try:
+         for line in r.iter_lines(chunk_size=1):
+-            print line
++            print(line)
+     except (KeyboardInterrupt, IOError):
+         pass
+ 
+@@ -822,7 +822,7 @@ def api_container_logs(args):
+     if args.period: req['period'] = args.period
+     path = '/applications/%s/containers/%s/logs' % (ns, container)
+     for line in api_request(args, 'GET', path, req, display=False):
+-        print ' '.join(line)
++        print(' '.join(line))
+ 
+ def api_compose_up(args):
+     if args.file is None:
+@@ -845,14 +845,14 @@ def api_compose_up(args):
+         if 'message' in msg:
+             if 'object_type' in msg:
+                 msg['message'] = '[' + msg['object_type'] + '] ' + msg['message']
+-            print msg['message']
++            print(msg['message'])
+         elif 'error' in msg:
+             return exit_exc(msg.get('error_details'), Exception(msg), args)
+ 
+ def api_compose_get(args):
+     path = '/applications/%s/fig?standard=%s' % (args.namespace, args.standard)
+     r = api_request(args, 'GET', path)
+-    print r
++    print(r)
+ 
+ def api_repository_list(args):
+     if args.namespace:
+@@ -1261,7 +1261,7 @@ if __name__ == "__main__":
+     if dockercfg['USERNAME'] is None:
+         dockercfg = docker_parse_config_old(args.api_host, args.debug)
+     if dockercfg['USERNAME'] is None:
+-        print >> sys.stderr, "[WARNING] Failed to read credentials from configuration files"
++        print("[WARNING] Failed to read credentials from configuration files", file=sys.stderr)
+ 
+     if not args.api_user:
+         if 'SAIL_USER' in os.environ:
+@@ -1276,14 +1276,14 @@ if __name__ == "__main__":
+             args.api_password = dockercfg['PASSWORD']
+ 
+     if not args.api_user or not args.api_password:
+-        print >> sys.stderr, "Missing --api-user or --api-password"
++        print("Missing --api-user or --api-password", file=sys.stderr)
+         sys.exit(1)
+ 
+     # start real work
+     try:
+         args.func(args)
+     except KeyboardInterrupt:
+-        print "Interrupted..."
++        print("Interrupted...")
+     except requests.exceptions.HTTPError as e:
+ 
+         status = e.response.status_code
+diff --git a/setup.py b/setup.py
+index 1ad7d52..d7471f5 100644
+--- a/setup.py
++++ b/setup.py
+@@ -11,14 +11,14 @@ def _post_install(script_dir):
+     import platform
+ 
+     if platform.system() == "Windows":
+-        print "Bash autompletion is not supported on windows"
++        print("Bash autompletion is not supported on windows")
+         return
+ 
+     if os.geteuid() != 0:
+-        print "Installing autocompletion for current user"
++        print("Installing autocompletion for current user")
+         call(['activate-global-python-argcomplete', '--user'])
+     else:
+-        print "Installing system wide autocompletion"
++        print("Installing system wide autocompletion")
+         call([script_dir+'/activate-global-python-argcomplete'])
+ 
+ class install(_install):
