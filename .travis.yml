@@ -35,9 +35,9 @@ after_script:
 
 env:
   global:
-    - PYAML_VERSION=15.8.2-1
+    - PYAML_VERSION=15.8.2-2
     # travis encrypt -r waja/sail GITHUBTOKEN=XXXXXX (https://help.github.com/articles/creating-an-access-token-for-command-line-use / http://docs.travis-ci.com/user/encryption-keys/)
-    - secure: "dvfjB8ykAKYCgMPHYLmY27kBcRrysqwqoFSfKMG+DqGW53Ok8C5ropifPR/ue/QHiQNBgUQfSC/bn8d9VWlmfHRi5J9/url+1MgQ+wW33KzBVQT7ggKaWCNUxopABf0eC3STqTG1s1Shm/FWYMjAGLnaktAWh6U4q0KGJvysGGp9UxZFhFTNvdbq1s8Qw2rt8+GiVw4P0JYHHd0FTAEOid0hK1gnW7jeNWO6TpLFzWlP/0Y5CWaSrUzBBkffJxdPZgHAilW7WvTPC5HMsc1bImphiZBr07dxHZtudBOcfWQ8xJl7+XcxcuXkTwtIAbr7GaQUpbd2MUNfv8a9k/XLj6sYDumhI7Yn1mv0OVVP1Lkelax3WYLODycIjNaBmHaHU75V9bTWacy+4kv7Uv+Qm/iQrAS5vibw0/QnHpdS6zNI/otVW9UtgWmal79sswEZmDL571BJAvxFH8bKByBNMlZJMEfkWltjALnloJ+nFNe72+eU01SD0vjmgoV2qiNo/NmLs5GVRJ264YSZjjc7iaGk2qab44tft9kLM+oMKEFzI5VA1tUHv1cIUaM8LfMIly1CJQXFzlLKwulGkpq7ut741gX79xt0aQ9dewQ1DO96o8s5W2+ETLPIEK2XBstmuToVg787krEe6goCz/BXR1bS2iuGqPapV2gGvyti5N4="
+    - secure: "WDbWkU9tqfplokfFJvLaIYRKa40LNuLXYK6kUggs/GGSvUHBmvs/PQXzJwJPhWU2rfhvykIspUVd7O2LiifrThMLjYK1aH3AzS+WZzPUclLbFg1hx4+trO/SOe3Bl/UlSFo317IB5r5y6f+BrpWT+0UYSdiYLN3J5hJL2o0H/zOHWzDy2TMnUBwzFz2k2ifAj6WcxlMNVGRhzt22OAdn+OqlTSqhrvenyEhNHEID8QZqrqfVULOxWi2won4/tBIxu+N7re2vuHt7l+Wb+t/yVmfWWcV+Ll3HQpOH2QRW2RwdKxnbxx/x+cD/zywBsjf2AEvSys7SqDDXBcCiJQXCXQHsakMbMYkOMp/el5erCdv/4nQ3gnAOqyUA6DsIZD77UeeJMXrFZ2F6sRonCmqYniqbH+Wh6Nn2MAW3nfXZN78axxG82vVqI4BKykP9MIC5qvBX5QGj2GuIFC7iqsPHpvxn+8bpOTd06pbAI/UXBezNpf7TXAfNO6uU7+tsMKX0uhAD+aPKC7kbm58vZCVZWJ5NrLZRnE0vPJuFfbhJ3mjaEe1EFQxUKLHGwYzERrIWHjTR8yeid4duy80Vw99t25xH3f3aoA7hPjks/yEFU+Y2Ck74z6Y7oam0PFPiW4k+6Lu2taX7/EyiSPPjAskjAlNv0XUff97X+SLouTDxg8I="
 
 after_success:
     - mkdir -p debian/build/release/
