@@ -1,3 +1,17 @@
+sail (0.5.6-2) unstable; urgency=medium
+
+  * [34b5c53] travis-ci: Adding .travis.yml
+  * [2d170df] Adding debian/source/options
+  * [89b64e7] Fix changelog
+  * [550e236] Fixing copyright
+  * [dc66053] Adding python-pyaml as dependency
+  * [a4d9738] travis-ci: Install python-pyaml
+  * [9431697] travis-ci: pyaml has moved to archive
+  * [e944d99] travis-ci: we need sudo for dpkg -i
+  * [2961ec8] travis-ci: Dependencies for python-pyam
+
+ -- Jan Wagner <waja@cyconet.org>  Sun, 25 Oct 2015 11:46:40 +0100
+
 sail (0.5.6-1) unstable; urgency=low
 
   * Initial Release.
