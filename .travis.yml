@@ -18,6 +18,8 @@ install:
     - sudo apt-get install -qq --no-install-recommends devscripts equivs
     # pull build deps from debian/control
     - sudo mk-build-deps -ir -t "apt-get --yes --no-install-recommends"
+    # dependencies for python-pyaml
+    - sudo apt-get install -qq --no-install-recommends python-all
     - wget "https://github.com/waja-archive/pyaml/releases/download/debian%2F${PYAML_VERSION}/python-pyaml_${PYAML_VERSION}_all.deb" -O /tmp/python-pyaml_all.deb
     - sudo dpkg -i /tmp/python-pyaml_all.deb
     # remove packages needed for mk-build-deps
